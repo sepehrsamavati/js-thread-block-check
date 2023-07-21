@@ -1,0 +1,23 @@
+{
+  "name": "js-thread-block-check",
+  "description": "Detect thread blocks in JS runtime",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sepehrsamavati/js-thread-block-check.git"
+  },
+  "keywords": [],
+  "author": "Sepehr Samavati",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sepehrsamavati/js-thread-block-check/issues"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}

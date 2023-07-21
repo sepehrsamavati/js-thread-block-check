@@ -1,29 +1,51 @@
-type Logger = (message: string) => void;
+import { Callback, ILogger } from "./global";
 
-interface ILogger {
-    debug: Logger;
-    warn: Logger;
-}
+const hasUnref = typeof (setTimeout(() => { }, 1) as any).unref === "function";
 
 export default class ThreadBlockCheck {
-    #maxValidDelay = 20;
-    #intervalDelay = 1000;
+    static #maxValidDelay = 20;
+    static #intervalDelay = 1000;
+
     #lastCheck = performance.now();
-    #interval = setInterval(() => { this.#check() }, this.#intervalDelay).unref();
-
+    #interval: number;
     #logger: ILogger = console;
+    #callback?: Callback;
 
-    constructor(logger: ILogger) {
-        if([logger.debug, logger.warn].map(l => typeof l === "function"))
-            this.#logger = logger;
+    constructor(callback?: Callback);
+    constructor(logger?: ILogger);
+
+    constructor(loggerOrCallback?: unknown) {
+        if (typeof loggerOrCallback === "object") {
+            const logger = loggerOrCallback as ILogger;
+            if ([logger.debug, logger.warn].map(l => typeof l === "function"))
+                this.#logger = logger;
+        } else if (typeof loggerOrCallback === "function") {
+            this.#callback = loggerOrCallback as Callback;
+        }
+
         this.#logger.debug("✅ Thread block checking started...");
+
+        this.#interval = setInterval(() => { this.#check() }, ThreadBlockCheck.#intervalDelay);
+
+        if (hasUnref)
+            (this.#interval as any).unref();
     }
 
     #check() {
-        const delay = performance.now() - this.#lastCheck - this.#intervalDelay;
-        if(delay > this.#maxValidDelay)
-            this.#logger.warn(`⚠ Thread block detected: (${Math.round(delay)}ms)`);
+        const delay = performance.now() - this.#lastCheck - ThreadBlockCheck.#intervalDelay;
+
+        if (delay > ThreadBlockCheck.#maxValidDelay)
+        {
+            const time = Math.round(delay);
+            this.#logger.warn(`⚠ Thread block detected: (${time}ms)`);
+            if(this.#callback)
+                this.#callback(time);
+        }
 
         this.#lastCheck = performance.now();
+    }
+
+    dispose() {
+        clearInterval(this.#interval);
     }
 }
