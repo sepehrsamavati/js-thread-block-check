@@ -2,7 +2,7 @@ import { Callback, ILogger } from "./global";
 
 const hasUnref = typeof (setTimeout(() => { }, 1) as any).unref === "function";
 
-export default class ThreadBlockCheck {
+export default class ThreadBlockDetect {
     static #maxValidDelay = 20;
     static #intervalDelay = 1000;
 
@@ -25,16 +25,16 @@ export default class ThreadBlockCheck {
 
         this.#logger.debug("✅ Thread block checking started...");
 
-        this.#interval = setInterval(() => { this.#check() }, ThreadBlockCheck.#intervalDelay);
+        this.#interval = setInterval(() => { this.#check() }, ThreadBlockDetect.#intervalDelay);
 
         if (hasUnref)
             (this.#interval as any).unref();
     }
 
     #check() {
-        const delay = performance.now() - this.#lastCheck - ThreadBlockCheck.#intervalDelay;
+        const delay = performance.now() - this.#lastCheck - ThreadBlockDetect.#intervalDelay;
 
-        if (delay > ThreadBlockCheck.#maxValidDelay)
+        if (delay > ThreadBlockDetect.#maxValidDelay)
         {
             const time = Math.round(delay);
             this.#logger.warn(`⚠ Thread block detected: (${time}ms)`);

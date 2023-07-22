@@ -1,1 +1,1 @@
-# js-thread-block-check
+# js-thread-block-detect
