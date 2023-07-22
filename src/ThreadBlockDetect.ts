@@ -1,4 +1,4 @@
-import { Callback, ILogger } from "./global";
+import { Callback, ILogger } from "./global.types";
 
 const hasUnref = typeof (setTimeout(() => { }, 1) as any).unref === "function";
 
