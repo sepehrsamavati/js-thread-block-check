@@ -7,7 +7,7 @@ export default class ThreadBlockDetect {
     static #intervalDelay = 1000;
 
     #lastCheck = performance.now();
-    #interval: number;
+    #interval: number | NodeJS.Timeout;
     #logger: ILogger = console;
     #callback?: Callback;
 

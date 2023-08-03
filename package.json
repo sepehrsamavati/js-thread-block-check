@@ -1,13 +1,15 @@
 {
   "name": "js-thread-block-detect",
   "description": "Detect thread blocks in JS runtime",
-  "version": "0.1.0",
-  "main": "./lib/ThreadBlockDetect.js",
-  "types": "./typings/index.d.ts",
+  "version": "0.0.1",
+  "main": "./dist/ThreadBlockDetect.js",
+  "module": "./dist/ThreadBlockDetect.mjs",
+  "types": "./dist/ThreadBlockDetect.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsup ./src/ThreadBlockDetect.ts --format cjs,esm --dts",
+    "release": "pnpm run build && changeset publish",
+    "lint": "tsc"
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sepehrsamavati/js-thread-block-detect.git"
@@ -19,6 +21,8 @@
     "url": "https://github.com/sepehrsamavati/js-thread-block-detect/issues"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }
