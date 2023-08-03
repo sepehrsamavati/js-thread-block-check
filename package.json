@@ -1,7 +1,7 @@
 {
   "name": "js-thread-block-detect",
   "description": "Detect thread blocks in JS runtime",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "./dist/ThreadBlockDetect.js",
   "module": "./dist/ThreadBlockDetect.mjs",
   "types": "./dist/ThreadBlockDetect.d.ts",
