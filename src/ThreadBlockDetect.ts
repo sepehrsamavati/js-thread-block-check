@@ -7,7 +7,7 @@ export default class ThreadBlockDetect {
     static #intervalDelay = 1000;
 
     #lastCheck = performance.now();
-    #interval: number | NodeJS.Timeout;
+    #interval: number;
     #logger: ILogger = console;
     #callback?: Callback;
 
@@ -25,7 +25,7 @@ export default class ThreadBlockDetect {
 
         this.#logger.debug("✅ Thread block checking started...");
 
-        this.#interval = setInterval(() => { this.#check() }, ThreadBlockDetect.#intervalDelay);
+        this.#interval = setInterval(() => { this.#check() }, ThreadBlockDetect.#intervalDelay) as unknown as number;
 
         if (hasUnref)
             (this.#interval as any).unref();
