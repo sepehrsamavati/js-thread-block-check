@@ -2,7 +2,7 @@ import { Callback, ILogger } from "./global.types";
 
 const hasUnref = typeof (setTimeout(() => { }, 1) as any).unref === "function";
 
-export default class ThreadBlockDetect {
+export class ThreadBlockDetect {
     static #maxValidDelay = 20;
     static #intervalDelay = 1000;
 
