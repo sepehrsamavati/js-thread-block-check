@@ -25,13 +25,13 @@ export default class ThreadBlockDetect {
 
         this.#logger.debug("✅ Thread block checking started...");
 
-        this.#interval = setInterval(() => { this.#check() }, ThreadBlockDetect.#intervalDelay) as unknown as number;
+        this.#interval = setInterval(() => { this.#detect() }, ThreadBlockDetect.#intervalDelay) as unknown as number;
 
         if (hasUnref)
             (this.#interval as any).unref();
     }
 
-    #check() {
+    #detect() {
         const delay = performance.now() - this.#lastCheck - ThreadBlockDetect.#intervalDelay;
 
         if (delay > ThreadBlockDetect.#maxValidDelay)

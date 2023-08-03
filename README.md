@@ -5,13 +5,13 @@ This module tries to calculate event-loop delay with the help of an interval. Si
 Usage
 ```js
 // parameterless
-new ThreadBlockCheck();
+new ThreadBlockDetect();
 
 // pass callback; notice about thread blocks (delay is in milliseconds)
-new ThreadBlockCheck(delay => { /* do something */ });
+new ThreadBlockDetect(delay => { /* do something */ });
 
 // pass logger; e.g. console, winston &... (default is console)
-new ThreadBlockCheck(console);
+new ThreadBlockDetect(console);
 ```
 This will detect thread blocks in the thread where it's constructed.
 
@@ -23,9 +23,9 @@ I recommend [piscina](https://www.npmjs.com/package/piscina) for node 16 & newer
 
 How does it work?
 Get and save current time (using performance.now)
-Initialize an interval which runs the checker every 1000ms
+Initialize an interval which runs the detector every 1000ms
 
-Checker:
+Detector:
 Get current time
 Calculate delay (current - previous)
 Check if delay is smaller or bigger than a valid delay (e.g. 20ms) because delay cannot be 0 (single-threaded runtime architecture)
