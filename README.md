@@ -21,8 +21,13 @@ new ThreadBlockDetect(delay => { /* do something */ });
 
 // pass logger; e.g. console, winston & ... (default is console)
 new ThreadBlockDetect(console);
+
+// you can also clear interval by calling `dispose`
+// it's not necessary to dispose since `.unref()` will be called on interval creation if available
+const instance = new ThreadBlockDetect();
+instance.dispose();
 ```
-This will detect thread blocks in the thread where it's constructed.
+This will detect thread blocks in the thread <ins>where it's constructed and running</ins>.
 
 
 If there are thread blocks <ins>regularly</ins> or it's <ins>rare but massive</ins> (e.g. >5000ms), these are the solutions to offload tasks:
