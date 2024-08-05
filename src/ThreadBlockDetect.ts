@@ -11,17 +11,35 @@ export class ThreadBlockDetect {
     #logger: ILogger = console;
     #callback?: Callback;
 
-    constructor(callback?: Callback);
-    constructor(logger?: ILogger);
+    constructor(callback?: Callback, maxValidDelay?: number);
+    constructor(logger?: ILogger, maxValidDelay?: number);
+    constructor(maxValidDelay?: number);
 
-    constructor(loggerOrCallback?: unknown) {
-        if (typeof loggerOrCallback === "object") {
-            const logger = loggerOrCallback as ILogger;
+    constructor(arg1?: unknown, maxValidDelay?: number) {
+
+        if (typeof arg1 === "object") {
+            const logger = arg1 as ILogger;
             if ([logger.debug, logger.warn].map(l => typeof l === "function"))
                 this.#logger = logger;
-        } else if (typeof loggerOrCallback === "function") {
-            this.#callback = loggerOrCallback as Callback;
+        } else if (typeof arg1 === "function") {
+            this.#callback = arg1 as Callback;
         }
+
+        let _maxValidDelay: number | null = null;
+        if (typeof arg1 === "number" && !Number.isNaN(arg1)) {
+            _maxValidDelay = arg1;
+        } else if (maxValidDelay && !Number.isNaN(arg1)) {
+            _maxValidDelay = maxValidDelay;
+        }
+
+        if (_maxValidDelay !== null)
+            ThreadBlockDetect.#maxValidDelay = Math.max(
+                0,
+                Math.min(
+                    _maxValidDelay,
+                    10_000_000
+                )
+            );
 
         this.#logger.debug("✅ Thread block checking started...");
 
@@ -34,11 +52,10 @@ export class ThreadBlockDetect {
     #detect() {
         const delay = performance.now() - this.#lastCheck - ThreadBlockDetect.#intervalDelay;
 
-        if (delay > ThreadBlockDetect.#maxValidDelay)
-        {
+        if (delay > ThreadBlockDetect.#maxValidDelay) {
             const time = Math.round(delay);
             this.#logger.warn(`⚠ Thread block detected: (${time}ms)`);
-            if(this.#callback)
+            if (this.#callback)
                 this.#callback(time);
         }
 
