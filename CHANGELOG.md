@@ -1,5 +1,11 @@
 # js-thread-block-detect
 
+## 1.1.0
+
+### Minor Changes
+
+- ae8b475: Max valid delay as parameter
+
 ## 1.0.1
 
 ### Patch Changes
