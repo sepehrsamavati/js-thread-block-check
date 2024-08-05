@@ -1,7 +1,7 @@
 {
   "name": "@semizero/thread-block-detect",
   "description": "Detect thread blocks in JS runtime",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": false,
   "main": "dist/ThreadBlockDetect.js",
   "module": "dist/ThreadBlockDetect.mjs",
